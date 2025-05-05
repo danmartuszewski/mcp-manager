@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>MCP Manager</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="app-title">
+        <div class="app-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <h1>MCP Manager</h1>
+      </div>
+      <div class="header-actions">
+        <button id="settings-btn" class="icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="local">Local Servers</button>
+        <button class="tab-btn" data-tab="remote">Remote Directories</button>
+      </div>
+
+      <div class="tab-content active" id="local-tab">
+        <div class="actions-bar">
+          <button id="add-server-btn" class="primary-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Server
+          </button>
+          <button id="parse-json-btn" class="primary-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Parse JSON Config
+          </button>
+          <button id="restart-claude-btn" class="secondary-btn">Save Config & Restart Claude</button>
+        </div>
+
+        <div class="server-list-container">
+          <table class="server-list">
+            <thead>
+              <tr>
+                <th>Server</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="server-list-body">
+              <!-- Server items will be added here dynamically -->
+            </tbody>
+          </table>
+          <div id="empty-state" class="empty-state">
+            <p>No MCP servers configured yet.</p>
+            <p>Add a server or import from a remote directory.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="remote-tab">
+        <div class="remote-sources">
+          <div class="source-card">
+            <h3>MCP Server Directories</h3>
+            <p>Visit these websites to find more MCP servers</p>
+            <div class="external-links">
+              <a href="https://mcp.so" target="_blank" class="primary-btn">MCP.so Directory</a>
+              <a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" class="primary-btn">GitHub Awesome MCP Servers</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Templates -->
+  <div id="server-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add MCP Server</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="server-form">
+          <div class="form-group">
+            <label for="server-name">Name</label>
+            <input type="text" id="server-name" required>
+          </div>
+          <div class="form-group">
+            <label for="server-definition">Definition (JSON)</label>
+            <textarea id="server-definition" class="code-editor" required></textarea>
+            <div id="definition-validation" class="validation-message"></div>
+            <div class="form-actions-row">
+              <button type="button" id="import-json-btn" class="secondary-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                Paste JSON Config
+              </button>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Save</button>
+            <button type="button" class="secondary-btn cancel-btn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="settings-form">
+          <div class="form-group">
+            <label for="claude-config-path">Claude Config Path</label>
+            <div class="path-input">
+              <input type="text" id="claude-config-path" required>
+              <button type="button" id="browse-config-path" class="secondary-btn">Browse</button>
+            </div>
+          </div>
+          <div class="form-group checkbox">
+            <input type="checkbox" id="backups-enabled">
+            <label for="backups-enabled">Create backups before overwriting config</label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Save</button>
+            <button type="button" class="secondary-btn cancel-btn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmation-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmation-message"></p>
+        <div class="form-actions">
+          <button type="button" id="confirm-yes" class="primary-btn">Yes</button>
+          <button type="button" id="confirm-no" class="secondary-btn">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import JSON Modal -->
+  <div id="import-json-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Import MCP Servers from JSON</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Paste JSON containing MCP server configurations. The system will automatically extract all server definitions.</p>
+        <div class="form-group">
+          <label for="json-input">JSON Config</label>
+          <textarea id="json-input" class="code-editor" placeholder='{ "mcpServers": { "serverName": { "command": "...", "args": [...] } } }'></textarea>
+          <div id="json-validation" class="validation-message"></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="process-json-btn" class="primary-btn">Import Servers</button>
+          <button type="button" class="secondary-btn cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html> 
