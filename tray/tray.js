@@ -17,7 +17,7 @@ function createTray(getServersFn, updateServersFn, getConfigFn) {
 
   try {
     // Create tray icon - using absolute path to ensure it works
-    const iconPath = path.join(__dirname, '../resources/trayIcon.png');
+    const iconPath = path.join(__dirname, '../resources/trayIconTemplate.png');
     
     // Check if the icon file exists and is a valid image
     if (!fs.existsSync(iconPath) || fs.statSync(iconPath).size < 1000) {
@@ -59,7 +59,7 @@ function createTray(getServersFn, updateServersFn, getConfigFn) {
     
     // Try again with the newly created icon
     try {
-      const iconPath = path.join(__dirname, '../resources/trayIcon.png');
+      const iconPath = path.join(__dirname, '../resources/trayIconTemplate.png');
       tray = new Tray(iconPath);
       tray.setToolTip('MCP Manager');
       updateContextMenu();
@@ -76,7 +76,7 @@ function createTray(getServersFn, updateServersFn, getConfigFn) {
 function createSimpleTrayIcon() {
   try {
     // Create a simple PNG as a fallback
-    const iconPath = path.join(__dirname, '../resources/trayIcon.png');
+    const iconPath = path.join(__dirname, '../resources/trayIconTemplate.png');
     
     // Simple 1x1 transparent PNG (base64 encoded)
     const minimalPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'base64');
