@@ -2,21 +2,6 @@
 
 A macOS Electron application for managing Claude MCP server configurations with a user-friendly GUI.
 
-## Platform Support
-
-MCP Manager is currently **macOS-only** due to:
-
-1. macOS-specific Claude app location (`~/Library/Application Support/Claude/`)
-2. macOS-specific process management commands (`pgrep`, `kill`, `open -a`)
-3. macOS-specific UI elements (menu bar integration)
-4. Clipboard handling designed for macOS permissions
-
-To make it multiplatform would require:
-- Adding Windows/Linux config paths for Claude
-- Implementing platform-specific process management
-- Adapting the tray icon behavior for different platforms
-- Modifying clipboard permission handling
-
 ## Features
 
 - **MCP Server Management**: Add, edit, delete, and toggle MCP servers for Claude
